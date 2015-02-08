@@ -1,0 +1,19 @@
+.anchor1,
+.anchor2 {
+    color: green;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+[data-line-state] {
+    transition: width 1s ease;
+}
+
+[data-line-state="in-active"] {
+    width: 0 !important;
+}
+
+[data-line-state="in-active"]::before,
+[data-line-state="in-active"]::after {
+    display: none;
+}
