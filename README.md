@@ -43,7 +43,7 @@ var anchor = LINES.createAnchor({
     yOffset: {Number},
     xOrigin: {'center' or 'left' or 'right'},
     yOrigin: {'center' or 'top' or 'left'}
-})
+});
 
 // defaults
 {
@@ -65,7 +65,7 @@ var anchor = LINES.createAnchor({
 LINES.createLine(anchor1, anchor2, {
     name: {String},
     state: {String}
-})
+});
 
 // defaults
 {
