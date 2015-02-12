@@ -9,6 +9,8 @@ body {
 [data-line="logo"] {
     height: 5px;
     background: #000;
+    transition: all .1s linear;
+    will-change: width, transform, opacity, visibility;
 
     &::before,
     &::after {
@@ -25,6 +27,20 @@ body {
         right: 0;
         transform: translate(2.5px, 0);
     }
+}
+
+[data-line-state="hidden"] {
+    visibility: hidden;
+    width: 0px !important;
+}
+
+[data-line-state="solid"] {
+    transition-time: 1s;
+}
+
+[data-line-state="invisible"] {
+    visibility: hidden;
+    opacity: 0;
 }
 
 .Logo {
@@ -57,11 +73,11 @@ body {
     }
 
     .html.l {
-        left: 210px;
+        left: 215px;
     }
 
     .lines.l {
-        left: 320px;
+        left: 325px;
     }
 
     .lines.i {
@@ -69,7 +85,7 @@ body {
     }
 
     .lines.n {
-        left: 430px;
+        left: 425px;
     }
 
     .lines.e {

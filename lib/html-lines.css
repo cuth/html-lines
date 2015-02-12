@@ -1,5 +1,7 @@
 [data-line] {
     position: absolute;
+    left: 0;
+    top: 0;
     height: 1px;
     background: rgba(0, 0, 0, .8);
     transform-origin: left top;

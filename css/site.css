@@ -7,7 +7,9 @@ body {
 
 [data-line="logo"] {
   height: 5px;
-  background: #000; }
+  background: #000;
+  transition: all .1s linear;
+  will-change: width, transform, opacity, visibility; }
   [data-line="logo"]::before, [data-line="logo"]::after {
     width: 5px;
     height: 5px; }
@@ -17,6 +19,17 @@ body {
   [data-line="logo"]::after {
     right: 0;
     transform: translate(2.5px, 0); }
+
+[data-line-state="hidden"] {
+  visibility: hidden;
+  width: 0px !important; }
+
+[data-line-state="solid"] {
+  transition-time: 1s; }
+
+[data-line-state="invisible"] {
+  visibility: hidden;
+  opacity: 0; }
 
 .Logo {
   position: relative;
@@ -39,13 +52,13 @@ body {
   .Logo .html.m {
     left: 140px; }
   .Logo .html.l {
-    left: 210px; }
+    left: 215px; }
   .Logo .lines.l {
-    left: 320px; }
+    left: 325px; }
   .Logo .lines.i {
     left: 375px; }
   .Logo .lines.n {
-    left: 430px; }
+    left: 425px; }
   .Logo .lines.e {
     left: 500px; }
   .Logo .lines.s {

@@ -276,7 +276,7 @@
         }),
         LINES.createAnchor({
             el: lines.e,
-            xOrigin: 'right',
+            xOrigin: .8,
             yOrigin: 'center'
         }),
         settings
@@ -330,4 +330,49 @@
     window.addEventListener('resize', function () {
         LINES.redraw();
     });
+
+    // animation
+    var time = 100;
+    var fadeLines = _lines.slice();
+    var delay = 10000;
+
+    var revert = function () {
+        fadeLines = _lines.slice();
+        delay = 10000;
+
+        _lines.forEach(function (line) {
+            line.state('hidden');
+        });
+
+        setTimeout(reveal, 200);
+    };
+
+    var fade = function () {
+
+        if (fadeLines.length < 1) {
+            revert();
+            return;
+        }
+
+        var randomNum = Math.floor(Math.random() * fadeLines.length);
+
+        var line = fadeLines.splice(randomNum, 1)[0];
+
+        line.state('invisible');
+
+        delay = delay - delay / 3 + 50;
+
+        setTimeout(fade, delay);
+    };
+
+    var reveal = function () {
+        _lines.forEach(function (line, i) {
+            setTimeout(function () {
+                line.state('solid');
+            }, i * time);
+        });
+        setTimeout(fade, _lines.length * 100 + delay);
+    };
+
+    reveal();
 }());
