@@ -18,10 +18,10 @@
 
 [data-line]::before {
     left: 0;
-    transform: translate(-1px, -1px);
+    transform: translate(-1.5px, -1px);
 }
 
 [data-line]::after {
     right: 0;
-    transform: translate(1px, -1px);
+    transform: translate(1.5px, -1px);
 }

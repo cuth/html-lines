@@ -6,16 +6,17 @@ body {
   font-size: 14px; }
 
 [data-line="logo"] {
-  height: 5px; }
+  height: 5px;
+  background: #000; }
   [data-line="logo"]::before, [data-line="logo"]::after {
-    width: 7px;
-    height: 7px; }
+    width: 5px;
+    height: 5px; }
   [data-line="logo"]::before {
     left: 0;
-    transform: translate(-1px, -1px); }
+    transform: translate(-2.5px, 0); }
   [data-line="logo"]::after {
     right: 0;
-    transform: translate(1px, -1px); }
+    transform: translate(2.5px, 0); }
 
 .Logo {
   position: relative;

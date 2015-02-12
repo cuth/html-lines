@@ -8,21 +8,22 @@ body {
 
 [data-line="logo"] {
     height: 5px;
+    background: #000;
 
     &::before,
     &::after {
-        width: 7px;
-        height: 7px;
+        width: 5px;
+        height: 5px;
     }
 
     &::before {
         left: 0;
-        transform: translate(-1px, -1px);
+        transform: translate(-2.5px, 0);
     }
 
     &::after {
         right: 0;
-        transform: translate(1px, -1px);
+        transform: translate(2.5px, 0);
     }
 }
 
