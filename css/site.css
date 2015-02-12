@@ -1,0 +1,51 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: #dde5f4;
+  color: #000;
+  font-size: 14px; }
+
+[data-line="logo"] {
+  height: 5px; }
+  [data-line="logo"]::before, [data-line="logo"]::after {
+    width: 7px;
+    height: 7px; }
+  [data-line="logo"]::before {
+    left: 0;
+    transform: translate(-1px, -1px); }
+  [data-line="logo"]::after {
+    right: 0;
+    transform: translate(1px, -1px); }
+
+.Logo {
+  position: relative;
+  display: block;
+  margin: 50px auto;
+  padding: 0;
+  width: 630px;
+  height: 80px; }
+  .Logo span {
+    visibility: hidden;
+    position: absolute;
+    top: 0;
+    display: block;
+    height: inherit;
+    width: 60px; }
+  .Logo .html.h {
+    left: 0; }
+  .Logo .html.t {
+    left: 70px; }
+  .Logo .html.m {
+    left: 140px; }
+  .Logo .html.l {
+    left: 210px; }
+  .Logo .lines.l {
+    left: 320px; }
+  .Logo .lines.i {
+    left: 375px; }
+  .Logo .lines.n {
+    left: 430px; }
+  .Logo .lines.e {
+    left: 500px; }
+  .Logo .lines.s {
+    left: 570px; }
