@@ -205,10 +205,17 @@ p {
         text-align: center;
         text-decoration: none;
         color: #000;
+        text-transform: uppercase;
+        transition: all .3s ease;
     }
 
     .docs {
         left: 0;
+    }
+
+    &[data-link="docs"] .docs {
+        background: #000;
+        color: #fff;
     }
 
     .source {
@@ -231,10 +238,55 @@ p {
 [data-line="drop-line"] {
     z-index: 3;
     height: 3px;
-    width: 0 !important;
     transition: width .2s ease-in;
+
+    &::before,
+    &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 10px;
+        height: 10px;
+        background: #000;
+        border-radius: 50%;
+        transform: translate(-5px, -3.5px);
+        opacity: 0;
+        transition: opacity .3s ease;
+    }
+
+    &::after {
+        left: auto;
+        right: 0;
+        width: 15px;
+        height: 15px;
+        transform: translate(7.5px, -6px);
+    }
+
+    &[data-line-state="idle"] {
+        width: 0 !important;
+    }
 
     &[data-line-state="magnet"] {
         width: 50px !important;
+
+        &::before,
+        &::after {
+            opacity: 1;
+        }
+    }
+
+    &[data-line-state="locked"] {
+        transition: none;
+
+        &::before {
+            opacity: 0;
+        }
+
+        &::after {
+            width: 5px;
+            height: 5px;
+            transform: translate(2.5px, -1px);
+        }
     }
 }

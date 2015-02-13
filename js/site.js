@@ -455,8 +455,14 @@ var debounce = function(func, wait, immediate) {
     var github = document.querySelector('.Github');
     var icon = document.querySelector('.icon');
     var shadow = document.querySelector('.shadow');
-    var docs = document.querySelector('.docs');
-    var source = document.querySelector('.source');
+    var links = {
+        docs: {
+            el: document.querySelector('.docs')
+        },
+        source: {
+            el: document.querySelector('.source')
+        }
+    };
 
     var shadowAnchor = LINES.createAnchor({
         el: shadow
@@ -478,67 +484,88 @@ var debounce = function(func, wait, immediate) {
         stroke: 3
     };
 
-    var docAnchors = [
+    links.docs.anchors = [
         LINES.createAnchor({
-            el: docs,
+            el: links.docs.el,
             xOrigin: 0,
             yOrigin: 'top',
             xOffset: 1,
             yOffset: 1
         }),
         LINES.createAnchor({
-            el: docs,
+            el: links.docs.el,
             xOrigin: .25,
             yOrigin: 'top',
             yOffset: 1
         }),
         LINES.createAnchor({
-            el: docs,
+            el: links.docs.el,
             xOrigin: .75,
             yOrigin: 'top',
             yOffset: 1
         }),
         LINES.createAnchor({
-            el: docs,
+            el: links.docs.el,
             xOrigin: 1,
             yOrigin: 'top',
-            xOffset: -2,
+            xOffset: -1,
             yOffset: 1
         })
     ];
 
-    var docLines = [
+    links.docs.lines = [
         LINES.createLine(
-            docAnchors[0],
+            links.docs.anchors[0],
             iconAnchor,
             dropSettings
         ),
         LINES.createLine(
-            docAnchors[1],
+            links.docs.anchors[1],
             iconAnchor,
             dropSettings
         ),
         LINES.createLine(
-            docAnchors[2],
+            links.docs.anchors[2],
             iconAnchor,
             dropSettings
         ),
         LINES.createLine(
-            docAnchors[3],
+            links.docs.anchors[3],
             iconAnchor,
             dropSettings
         )
     ];
+
+    var activeLink = '';
+
+    var setActiveLink = function (linkName) {
+        if (activeLink === linkName) return;
+
+        if (activeLink) {
+            links[activeLink].lines.forEach(function (line) {
+                line.state('magnet');
+            });
+        }
+
+        if (linkName) {
+            links[linkName].lines.forEach(function (line) {
+                line.state('locked');
+            });
+        }
+
+        activeLink = linkName;
+        github.setAttribute('data-link', linkName);
+    };
 
     var iconDrag = new Dragger(icon, {
         start: function (pos) {
             github.setAttribute('data-state', 'dragging');
             iconLine.state('dragging');
             shadowAnchor.offset();
-            docAnchors.forEach(function (anchor) {
+            links.docs.anchors.forEach(function (anchor) {
                 anchor.offset();
             });
-            docLines.forEach(function (line) {
+            links.docs.lines.forEach(function (line) {
                 line.state('magnet');
             });
         },
@@ -546,14 +573,28 @@ var debounce = function(func, wait, immediate) {
             icon.style.transform = 'translate(' + pos.x + 'px, ' + pos.y + 'px)';
             iconAnchor.offset();
             iconLine.draw();
-            docLines.forEach(function (line) {
-                line.draw();
+
+            var shortestWidth = 200;
+            var shortest = '';
+            links.docs.lines.forEach(function (line) {
+                var width = line.draw().width;
+                if (width < shortestWidth) {
+                    shortestWidth = width;
+                    shortest = 'docs';
+                }
             });
+
+            setActiveLink(shortest);
         },
         stop: function (pos, hasChanged) {
+            if (activeLink) {
+                window.location = links[activeLink].el.getAttribute('href');
+                return;
+            }
+
             github.setAttribute('data-state', 'idle');
             iconLine.state('idle');
-            docLines.forEach(function (line) {
+            links.docs.lines.forEach(function (line) {
                 line.state('idle');
             });
         }
