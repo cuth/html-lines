@@ -1,31 +1,74 @@
+html {
+    height: 100%;
+}
+
 body {
     margin: 0;
     padding: 0;
+    min-height: 100%;
     background: #dde5f4;
     color: #000;
+    font-family: 'Source Sans Pro', sans-serif;
     font-size: 14px;
+    line-height: 1.6;
+    overflow-x: hidden;
 }
 
+h2 {
+    margin: 0;
+    padding: 10px 0 5px;
+    font-size: 25px;
+    line-height: 1.4;
+}
+
+p {
+    margin: 0;
+    padding: 0 0 15px;
+}
+
+@media (min-width: 1000px) {
+
+    body {
+        font-size: 20px;
+    }
+
+    h2 {
+        font-size: 35px;
+    }
+
+    p {
+        padding: 0 0 25px;
+    }
+}
+
+
+[data-line="example"] {
+    height: 10px;
+    border-radius: 5px;
+    background: rgba(0, 0, 0, .5);
+}
+
+
 [data-line="logo"] {
-    height: 5px;
+    height: 2px;
+    border-radius: 1px;
     background: #000;
     transition: all .1s linear;
     will-change: width, transform, opacity, visibility;
 
-    &::before,
-    &::after {
-        width: 5px;
-        height: 5px;
+    @media (min-width: 500px) {
+        height: 4px;
+        border-radius: 2px;
     }
 
-    &::before {
-        left: 0;
-        transform: translate(-2.5px, 0);
+    @media (min-width: 700px) {
+        height: 6px;
+        border-radius: 3px;
     }
 
-    &::after {
-        right: 0;
-        transform: translate(2.5px, 0);
+    @media (min-width: 1000px) {
+        height: 8px;
+        border-radius: 4px;
     }
 }
 
@@ -43,21 +86,28 @@ body {
     opacity: 0;
 }
 
+.Header {
+    margin: 0 auto;
+    max-width: 800px;
+    padding: 50px 6%;
+}
+
 .Logo {
     position: relative;
     display: block;
-    margin: 50px auto;
+    margin: 0;
     padding: 0;
-    width: 630px;
-    height: 80px;
+    width: 100%;
+    height: 0;
+    padding: 0 0 percentage(80 / 630);
 
     span {
         visibility: hidden;
         position: absolute;
         top: 0;
         display: block;
-        height: inherit;
-        width: 60px;
+        height: 100%;
+        width: percentage(60 / 630);
     }
 
     .html.h {
@@ -65,34 +115,126 @@ body {
     }
 
     .html.t {
-        left: 70px;
+        left: percentage(70 / 630);
     }
 
     .html.m {
-        left: 140px;
+        left: percentage(140 / 630);
     }
 
     .html.l {
-        left: 215px;
+        left: percentage(215 / 630);
     }
 
     .lines.l {
-        left: 325px;
+        left: percentage(325 / 630);
     }
 
     .lines.i {
-        left: 375px;
+        left: percentage(375 / 630);
     }
 
     .lines.n {
-        left: 425px;
+        left: percentage(425 / 630);
     }
 
     .lines.e {
-        left: 500px;
+        left: percentage(500 / 630);
     }
 
     .lines.s {
-        left: 570px;
+        left: percentage(570 / 630);
+    }
+}
+
+.Body {
+    margin: 0 auto;
+    max-width: 800px;
+    padding: 50px 6%;
+    background: #fff;
+}
+
+.Code {
+    margin: 0 0 30px !important;
+    padding: percentage(12 / 320);
+    background: #333;
+    font-size: 12px;
+    overflow-x: auto;
+}
+
+.Github {
+    position: relative;
+    height: 500px;
+    min-height: 300px;
+    max-height: 600px;
+    height: 50vh;
+
+    .icon,
+    .shadow {
+        position: absolute;
+        z-index: 10;
+        left: 50%;
+        top: 0;
+        width: 80px;
+        height: 80px;
+        margin: 0 0 0 -40px;
+        background: url("../img/github.svg") no-repeat left top / 80px 80px;
+        cursor: pointer;
+    }
+
+    .shadow {
+        z-index: 1;
+        opacity: 0;
+        transition: all .5s ease;
+    }
+
+    &[data-state="dragging"] .shadow {
+        opacity: .5;
+    }
+
+    .drop {
+        position: absolute;
+        z-index: 5;
+        bottom: 0;
+        border: 3px solid #000;
+        width: 150px;
+        height: 40px;
+        background: #fff;
+        font-size: 30px;
+        line-height: 40px;
+        text-align: center;
+        text-decoration: none;
+        color: #000;
+    }
+
+    .docs {
+        left: 0;
+    }
+
+    .source {
+        right: 0;
+    }
+}
+
+[data-line="github-icon"] {
+    opacity: 0;
+    z-index: 7;
+    height: 5px;
+    background: rgb(127, 127, 127);
+    transition: opacity .5s ease;
+
+    &[data-line-state="dragging"] {
+        opacity: 1;
+    }
+}
+
+[data-line="drop-line"] {
+    z-index: 3;
+    height: 3px;
+    width: 0 !important;
+    transition: width .2s ease-in;
+
+    &[data-line-state="magnet"] {
+        width: 50px !important;
     }
 }

@@ -7,7 +7,7 @@
     transform-origin: left top;
 }
 
-[data-line]::before,
+/*[data-line]::before,
 [data-line]::after {
     content: "";
     position: absolute;
@@ -26,4 +26,4 @@
 [data-line]::after {
     right: 0;
     transform: translate(1.5px, -1px);
-}
+}*/

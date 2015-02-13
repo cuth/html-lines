@@ -1,7 +1,62 @@
 /*global LINES */
 
+var debounce = function(func, wait, immediate) {
+    var timeout, args, context, timestamp, result;
+    return function() {
+        context = this;
+        args = arguments;
+        timestamp = new Date();
+        var later = function() {
+            var last = (new Date()) - timestamp;
+            if (last < wait) {
+                timeout = setTimeout(later, wait - last);
+            } else {
+                timeout = null;
+                if (!immediate) result = func.apply(context, args);
+            }
+        };
+        var callNow = immediate && !timeout;
+        if (!timeout) {
+            timeout = setTimeout(later, wait);
+        }
+        if (callNow) result = func.apply(context, args);
+        return result;
+    };
+};
+
+
+// Logo
 (function () {
     'use strict';
+
+    var differentStrokes = [
+        {
+            query: matchMedia('all'),
+            size: 2
+        },
+        {
+            query: matchMedia('(min-width: 500px)'),
+            size: 4
+        },
+        {
+            query: matchMedia('(min-width: 700px)'),
+            size: 6
+        },
+        {
+            query: matchMedia('(min-width: 1000px)'),
+            size: 8
+        }
+    ];
+
+    var getStrokeSize = function () {
+        var size = 0;
+        differentStrokes.forEach(function (stroke) {
+            if (stroke.query.matches) {
+                size = stroke.size;
+            }
+        });
+        return size;
+    };
 
     var logo = document.querySelector('.Logo');
 
@@ -22,10 +77,12 @@
 
     var _lines = [];
 
+    var strokeSize = getStrokeSize();
     var settings = {
         name: 'logo',
         state: 'hidden',
-        stroke: 5
+        stroke: strokeSize,
+        bleed: true
     };
 
     // H
@@ -326,19 +383,32 @@
         settings
     ));
 
-    // bind events
-    window.addEventListener('resize', function () {
+    var redrawDebounce = debounce(function () {
         LINES.redraw();
+    }, 150);
+
+    // bind events
+    window.addEventListener('resize', redrawDebounce);
+    differentStrokes.forEach(function (stroke) {
+        stroke.query.addListener(function () {
+            var newStrokeSize = getStrokeSize();
+            if (strokeSize !== newStrokeSize) {
+                strokeSize = newStrokeSize;
+                _lines.forEach(function (line) {
+                    line.stroke(strokeSize);
+                });
+            }
+        });
     });
 
     // animation
     var time = 100;
     var fadeLines = _lines.slice();
-    var delay = 10000;
+    var delay = 5000;
 
     var revert = function () {
         fadeLines = _lines.slice();
-        delay = 10000;
+        delay = 5000;
 
         _lines.forEach(function (line) {
             line.state('hidden');
@@ -360,7 +430,7 @@
 
         line.state('invisible');
 
-        delay = delay - delay / 3 + 50;
+        delay = delay - delay / 5 + 50;
 
         setTimeout(fade, delay);
     };
@@ -371,8 +441,121 @@
                 line.state('solid');
             }, i * time);
         });
-        setTimeout(fade, _lines.length * 100 + delay);
+        setTimeout(fade, 15000);
     };
 
     reveal();
+}());
+
+
+// Github
+(function () {
+    'use strict';
+
+    var github = document.querySelector('.Github');
+    var icon = document.querySelector('.icon');
+    var shadow = document.querySelector('.shadow');
+    var docs = document.querySelector('.docs');
+    var source = document.querySelector('.source');
+
+    var shadowAnchor = LINES.createAnchor({
+        el: shadow
+    });
+
+    var iconAnchor = LINES.createAnchor({
+        el: icon
+    });
+
+    var iconLine = LINES.createLine(shadowAnchor, iconAnchor, {
+        name: 'github-icon',
+        state: 'idle',
+        stroke: 5
+    });
+
+    var dropSettings = {
+        name: 'drop-line',
+        state: 'idle',
+        stroke: 3
+    };
+
+    var docAnchors = [
+        LINES.createAnchor({
+            el: docs,
+            xOrigin: 0,
+            yOrigin: 'top',
+            xOffset: 1,
+            yOffset: 1
+        }),
+        LINES.createAnchor({
+            el: docs,
+            xOrigin: .25,
+            yOrigin: 'top',
+            yOffset: 1
+        }),
+        LINES.createAnchor({
+            el: docs,
+            xOrigin: .75,
+            yOrigin: 'top',
+            yOffset: 1
+        }),
+        LINES.createAnchor({
+            el: docs,
+            xOrigin: 1,
+            yOrigin: 'top',
+            xOffset: -2,
+            yOffset: 1
+        })
+    ];
+
+    var docLines = [
+        LINES.createLine(
+            docAnchors[0],
+            iconAnchor,
+            dropSettings
+        ),
+        LINES.createLine(
+            docAnchors[1],
+            iconAnchor,
+            dropSettings
+        ),
+        LINES.createLine(
+            docAnchors[2],
+            iconAnchor,
+            dropSettings
+        ),
+        LINES.createLine(
+            docAnchors[3],
+            iconAnchor,
+            dropSettings
+        )
+    ];
+
+    var iconDrag = new Dragger(icon, {
+        start: function (pos) {
+            github.setAttribute('data-state', 'dragging');
+            iconLine.state('dragging');
+            shadowAnchor.offset();
+            docAnchors.forEach(function (anchor) {
+                anchor.offset();
+            });
+            docLines.forEach(function (line) {
+                line.state('magnet');
+            });
+        },
+        drag: function (pos) {
+            icon.style.transform = 'translate(' + pos.x + 'px, ' + pos.y + 'px)';
+            iconAnchor.offset();
+            iconLine.draw();
+            docLines.forEach(function (line) {
+                line.draw();
+            });
+        },
+        stop: function (pos, hasChanged) {
+            github.setAttribute('data-state', 'idle');
+            iconLine.state('idle');
+            docLines.forEach(function (line) {
+                line.state('idle');
+            });
+        }
+    });
 }());

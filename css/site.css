@@ -1,24 +1,59 @@
+html {
+  height: 100%; }
+
 body {
   margin: 0;
   padding: 0;
+  min-height: 100%;
   background: #dde5f4;
   color: #000;
-  font-size: 14px; }
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-x: hidden; }
+
+h2 {
+  margin: 0;
+  padding: 10px 0 5px;
+  font-size: 25px;
+  line-height: 1.4; }
+
+p {
+  margin: 0;
+  padding: 0 0 15px; }
+
+@media (min-width: 1000px) {
+  body {
+    font-size: 20px; }
+
+  h2 {
+    font-size: 35px; }
+
+  p {
+    padding: 0 0 25px; } }
+[data-line="example"] {
+  height: 10px;
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.5); }
 
 [data-line="logo"] {
-  height: 5px;
+  height: 2px;
+  border-radius: 1px;
   background: #000;
   transition: all .1s linear;
   will-change: width, transform, opacity, visibility; }
-  [data-line="logo"]::before, [data-line="logo"]::after {
-    width: 5px;
-    height: 5px; }
-  [data-line="logo"]::before {
-    left: 0;
-    transform: translate(-2.5px, 0); }
-  [data-line="logo"]::after {
-    right: 0;
-    transform: translate(2.5px, 0); }
+  @media (min-width: 500px) {
+    [data-line="logo"] {
+      height: 4px;
+      border-radius: 2px; } }
+  @media (min-width: 700px) {
+    [data-line="logo"] {
+      height: 6px;
+      border-radius: 3px; } }
+  @media (min-width: 1000px) {
+    [data-line="logo"] {
+      height: 8px;
+      border-radius: 4px; } }
 
 [data-line-state="hidden"] {
   visibility: hidden;
@@ -31,35 +66,112 @@ body {
   visibility: hidden;
   opacity: 0; }
 
+.Header {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 50px 6%; }
+
 .Logo {
   position: relative;
   display: block;
-  margin: 50px auto;
+  margin: 0;
   padding: 0;
-  width: 630px;
-  height: 80px; }
+  width: 100%;
+  height: 0;
+  padding: 0 0 12.69841%; }
   .Logo span {
     visibility: hidden;
     position: absolute;
     top: 0;
     display: block;
-    height: inherit;
-    width: 60px; }
+    height: 100%;
+    width: 9.52381%; }
   .Logo .html.h {
     left: 0; }
   .Logo .html.t {
-    left: 70px; }
+    left: 11.11111%; }
   .Logo .html.m {
-    left: 140px; }
+    left: 22.22222%; }
   .Logo .html.l {
-    left: 215px; }
+    left: 34.12698%; }
   .Logo .lines.l {
-    left: 325px; }
+    left: 51.5873%; }
   .Logo .lines.i {
-    left: 375px; }
+    left: 59.52381%; }
   .Logo .lines.n {
-    left: 425px; }
+    left: 67.46032%; }
   .Logo .lines.e {
-    left: 500px; }
+    left: 79.36508%; }
   .Logo .lines.s {
-    left: 570px; }
+    left: 90.47619%; }
+
+.Body {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 50px 6%;
+  background: #fff; }
+
+.Code {
+  margin: 0 0 30px !important;
+  padding: 3.75%;
+  background: #333;
+  font-size: 12px;
+  overflow-x: auto; }
+
+.Github {
+  position: relative;
+  height: 500px;
+  min-height: 300px;
+  max-height: 600px;
+  height: 50vh; }
+  .Github .icon,
+  .Github .shadow {
+    position: absolute;
+    z-index: 10;
+    left: 50%;
+    top: 0;
+    width: 80px;
+    height: 80px;
+    margin: 0 0 0 -40px;
+    background: url("../img/github.svg") no-repeat left top/80px 80px;
+    cursor: pointer; }
+  .Github .shadow {
+    z-index: 1;
+    opacity: 0;
+    transition: all .5s ease; }
+  .Github[data-state="dragging"] .shadow {
+    opacity: .5; }
+  .Github .drop {
+    position: absolute;
+    z-index: 5;
+    bottom: 0;
+    border: 3px solid #000;
+    width: 150px;
+    height: 40px;
+    background: #fff;
+    font-size: 30px;
+    line-height: 40px;
+    text-align: center;
+    text-decoration: none;
+    color: #000; }
+  .Github .docs {
+    left: 0; }
+  .Github .source {
+    right: 0; }
+
+[data-line="github-icon"] {
+  opacity: 0;
+  z-index: 7;
+  height: 5px;
+  background: #7f7f7f;
+  transition: opacity .5s ease; }
+  [data-line="github-icon"][data-line-state="dragging"] {
+    opacity: 1; }
+
+[data-line="drop-line"] {
+  z-index: 3;
+  height: 3px;
+  width: 0 !important;
+  transition: width .2s ease-in; }
+  [data-line="drop-line"][data-line-state="magnet"] {
+    width: 50px !important; }

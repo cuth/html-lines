@@ -5,15 +5,64 @@
         <title>html-lines</title>
         <link rel="stylesheet" href="lib/html-lines.css">
         <link rel="stylesheet" href="css/site.css">
+        <link rel="stylesheet" href="css/prisim.css">
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro">
     </head>
     <body>
 
-        <h1 class="Logo">
-            <span class="html h">h</span><span class="html t">t</span><span class="html m">m</span><span class="html l">l</span>
-            <span class="lines l">l</span><span class="lines i">i</span><span class="lines n">n</span><span class="lines e">e</span><span class="lines s">s</span>
-        </h1>
+        <header class="Header">
+
+            <h1 class="Logo">
+                <span class="html h">h</span><span class="html t">t</span><span class="html m">m</span><span class="html l">l</span>
+                <span class="lines l">l</span><span class="lines i">i</span><span class="lines n">n</span><span class="lines e">e</span><span class="lines s">s</span>
+            </h1>
+
+        </header>
+
+        <div class="Body">
+
+<p>This lightweight and dependency free JavaScript module helps you draw lines in HTML. By anchoring each end of the line to a specific DOM element, the lines become apart of the page. When the layout adjusts simply redraw the line. Use CSS to style the lines and JavaScript to manipulate them.</p>
+
+<h2>How to draw a basic line</h2>
+<p>This is a simple example of how to draw a line across the entire page. Try pasting this code into the browser console.</p>
+
+<pre class="Code">
+<code class="language-javascript">var anchor1 = LINES.createAnchor({
+    el: document.body,
+    xOrigin: 'left',
+    yOrigin: 'top',
+    xOffset: 6,
+    yOffset: 6
+});
+
+var anchor2 = LINES.createAnchor({
+    el: document.body,
+    xOrigin: 'right',
+    yOrigin: 'bottom',
+    xOffset: 6,
+    yOffset: 6
+});
+
+LINES.createLine(anchor1, anchor2, {
+    name: 'example',
+    stroke: 10
+});</code>
+</pre>
+
+<h2>Github</h2>
+<p>Drag the icon to visit the documentation or the source. Example</p>
+<div class="Github" data-state="idle">
+    <div class="shadow"></div>
+    <div class="icon"></div>
+    <a href="https://github.com/cuth/html-lines" class="drop docs">Docs</a>
+    <a href="https://github.com/cuth/html-lines/blob/master/html-lines.js" class="drop source">Source</a>
+</div>
+
+        </div>
 
         <script src="lib/html-lines.js"></script>
+        <script src="js/dragger.js"></script>
         <script src="js/site.js"></script>
+        <script src="js/prisim.js"></script>
     </body>
 </html>
