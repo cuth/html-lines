@@ -88,7 +88,7 @@ The stroke or height of the line element needs to be set in pixels to accuratly 
 Bleed is used to extend lines half the width of the stroke on each end.
 
 ### LINES.redraw
-Recalculates anchor positions and changes line position and size and angle
+Recalculates anchor positions and changes line position, size and angle.
 ```js
 LINES.redraw();
 ```
