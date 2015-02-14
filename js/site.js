@@ -629,13 +629,13 @@ var debounce = function(func, wait, immediate) {
             icon.style.webkitTransform = 'translate(' + pos.x + 'px, ' + pos.y + 'px)';
             icon.style.transform = 'translate(' + pos.x + 'px, ' + pos.y + 'px)';
             iconAnchor.offset();
-            iconLine.draw();
+            iconLine.redraw();
 
             var shortestWidth = 100;
             var shortest = '';
 
             links.docs.lines.forEach(function (line) {
-                var width = line.draw().width;
+                var width = line.redraw().width;
                 if (width < 100) {
                     line.state('locked');
                 } else {
@@ -648,7 +648,7 @@ var debounce = function(func, wait, immediate) {
             });
 
             links.source.lines.forEach(function (line) {
-                var width = line.draw().width;
+                var width = line.redraw().width;
                 if (width < 100) {
                     line.state('locked');
                 } else {
