@@ -40,8 +40,7 @@ p {
   height: 2px;
   border-radius: 1px;
   background: #000;
-  transition: all .1s linear;
-  will-change: width, transform, opacity, visibility; }
+  transition: all .1s linear; }
   @media (min-width: 500px) {
     [data-line="logo"] {
       height: 4px;
@@ -123,7 +122,8 @@ p {
   height: 500px;
   min-height: 300px;
   max-height: 600px;
-  height: 50vh; }
+  height: 50vh;
+  margin: 0 0 30px; }
   .Github .icon,
   .Github .shadow {
     position: absolute;
@@ -163,6 +163,15 @@ p {
     color: #fff; }
   .Github .source {
     right: 0; }
+  .Github[data-link="source"] .source {
+    background: #000;
+    color: #fff; }
+  @media (max-width: 499px) {
+    .Github .drop {
+      width: 90px;
+      height: 30px;
+      font-size: 20px;
+      line-height: 30px; } }
 
 [data-line="github-icon"] {
   opacity: 0;
@@ -186,15 +195,20 @@ p {
     height: 10px;
     background: #000;
     border-radius: 50%;
+    -webkit-transform: translate(-5px, -3.5px);
     transform: translate(-5px, -3.5px);
+    -webkit-transform-origin: center center;
+    transform-origin: center center;
     opacity: 0;
-    transition: opacity .3s ease; }
+    transition: opacity .3s ease, transform .5s ease; }
   [data-line="drop-line"]::after {
     left: auto;
     right: 0;
     width: 15px;
     height: 15px;
-    transform: translate(7.5px, -6px); }
+    -webkit-transform: translate(7.5px, -6px);
+    transform: translate(7.5px, -6px);
+    transition: opacity .3s ease; }
   [data-line="drop-line"][data-line-state="idle"] {
     width: 0 !important; }
   [data-line="drop-line"][data-line-state="magnet"] {
@@ -203,9 +217,7 @@ p {
       opacity: 1; }
   [data-line="drop-line"][data-line-state="locked"] {
     transition: none; }
-    [data-line="drop-line"][data-line-state="locked"]::before {
-      opacity: 0; }
-    [data-line="drop-line"][data-line-state="locked"]::after {
-      width: 5px;
-      height: 5px;
-      transform: translate(2.5px, -1px); }
+    [data-line="drop-line"][data-line-state="locked"]::before, [data-line="drop-line"][data-line-state="locked"]::after {
+      -webkit-transform: translate(-5px, -3.5px) scale(0.5);
+      transform: translate(-5px, -3.5px) scale(0.5);
+      opacity: 1; }

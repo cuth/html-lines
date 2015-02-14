@@ -388,7 +388,11 @@ var debounce = function(func, wait, immediate) {
     }, 150);
 
     // bind events
+    window.addEventListener('load', function () {
+        LINES.redraw();
+    });
     window.addEventListener('resize', redrawDebounce);
+
     differentStrokes.forEach(function (stroke) {
         stroke.query.addListener(function () {
             var newStrokeSize = getStrokeSize();
@@ -536,6 +540,58 @@ var debounce = function(func, wait, immediate) {
         )
     ];
 
+    links.source.anchors = [
+        LINES.createAnchor({
+            el: links.source.el,
+            xOrigin: 0,
+            yOrigin: 'top',
+            xOffset: 1,
+            yOffset: 1
+        }),
+        LINES.createAnchor({
+            el: links.source.el,
+            xOrigin: .25,
+            yOrigin: 'top',
+            yOffset: 1
+        }),
+        LINES.createAnchor({
+            el: links.source.el,
+            xOrigin: .75,
+            yOrigin: 'top',
+            yOffset: 1
+        }),
+        LINES.createAnchor({
+            el: links.source.el,
+            xOrigin: 1,
+            yOrigin: 'top',
+            xOffset: -1,
+            yOffset: 1
+        })
+    ];
+
+    links.source.lines = [
+        LINES.createLine(
+            links.source.anchors[0],
+            iconAnchor,
+            dropSettings
+        ),
+        LINES.createLine(
+            links.source.anchors[1],
+            iconAnchor,
+            dropSettings
+        ),
+        LINES.createLine(
+            links.source.anchors[2],
+            iconAnchor,
+            dropSettings
+        ),
+        LINES.createLine(
+            links.source.anchors[3],
+            iconAnchor,
+            dropSettings
+        )
+    ];
+
     var activeLink = '';
 
     var setActiveLink = function (linkName) {
@@ -544,12 +600,6 @@ var debounce = function(func, wait, immediate) {
         if (activeLink) {
             links[activeLink].lines.forEach(function (line) {
                 line.state('magnet');
-            });
-        }
-
-        if (linkName) {
-            links[linkName].lines.forEach(function (line) {
-                line.state('locked');
             });
         }
 
@@ -565,22 +615,48 @@ var debounce = function(func, wait, immediate) {
             links.docs.anchors.forEach(function (anchor) {
                 anchor.offset();
             });
+            links.source.anchors.forEach(function (anchor) {
+                anchor.offset();
+            });
             links.docs.lines.forEach(function (line) {
+                line.state('magnet');
+            });
+            links.source.lines.forEach(function (line) {
                 line.state('magnet');
             });
         },
         drag: function (pos) {
+            icon.style.webkitTransform = 'translate(' + pos.x + 'px, ' + pos.y + 'px)';
             icon.style.transform = 'translate(' + pos.x + 'px, ' + pos.y + 'px)';
             iconAnchor.offset();
             iconLine.draw();
 
-            var shortestWidth = 200;
+            var shortestWidth = 100;
             var shortest = '';
+
             links.docs.lines.forEach(function (line) {
                 var width = line.draw().width;
+                if (width < 100) {
+                    line.state('locked');
+                } else {
+                    line.state('magnet');
+                }
                 if (width < shortestWidth) {
                     shortestWidth = width;
                     shortest = 'docs';
+                }
+            });
+
+            links.source.lines.forEach(function (line) {
+                var width = line.draw().width;
+                if (width < 100) {
+                    line.state('locked');
+                } else {
+                    line.state('magnet');
+                }
+                if (width < shortestWidth) {
+                    shortestWidth = width;
+                    shortest = 'source';
                 }
             });
 
@@ -595,6 +671,9 @@ var debounce = function(func, wait, immediate) {
             github.setAttribute('data-state', 'idle');
             iconLine.state('idle');
             links.docs.lines.forEach(function (line) {
+                line.state('idle');
+            });
+            links.source.lines.forEach(function (line) {
                 line.state('idle');
             });
         }

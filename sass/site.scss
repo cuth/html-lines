@@ -54,7 +54,7 @@ p {
     border-radius: 1px;
     background: #000;
     transition: all .1s linear;
-    will-change: width, transform, opacity, visibility;
+    //will-change: width, transform, opacity, visibility;
 
     @media (min-width: 500px) {
         height: 4px;
@@ -168,6 +168,7 @@ p {
     min-height: 300px;
     max-height: 600px;
     height: 50vh;
+    margin: 0 0 30px;
 
     .icon,
     .shadow {
@@ -221,6 +222,21 @@ p {
     .source {
         right: 0;
     }
+
+    &[data-link="source"] .source {
+        background: #000;
+        color: #fff;
+    }
+
+    @media (max-width: 499px) {
+
+        .drop {
+            width: 90px;
+            height: 30px;
+            font-size: 20px;
+            line-height: 30px;
+        }
+    }
 }
 
 [data-line="github-icon"] {
@@ -250,9 +266,12 @@ p {
         height: 10px;
         background: #000;
         border-radius: 50%;
+        -webkit-transform: translate(-5px, -3.5px);
         transform: translate(-5px, -3.5px);
+        -webkit-transform-origin: center center;
+        transform-origin: center center;
         opacity: 0;
-        transition: opacity .3s ease;
+        transition: opacity .3s ease, transform .5s ease;
     }
 
     &::after {
@@ -260,7 +279,9 @@ p {
         right: 0;
         width: 15px;
         height: 15px;
+        -webkit-transform: translate(7.5px, -6px);
         transform: translate(7.5px, -6px);
+        transition: opacity .3s ease;
     }
 
     &[data-line-state="idle"] {
@@ -279,14 +300,11 @@ p {
     &[data-line-state="locked"] {
         transition: none;
 
-        &::before {
-            opacity: 0;
-        }
-
+        &::before,
         &::after {
-            width: 5px;
-            height: 5px;
-            transform: translate(2.5px, -1px);
+            -webkit-transform: translate(-5px, -3.5px) scale(.5);
+            transform: translate(-5px, -3.5px) scale(.5);
+            opacity: 1;
         }
     }
 }
