@@ -38,9 +38,10 @@ var LINES = (function () {
     var emit = function (event /* , args... */) {
         this._events = this._events || {};
         if (event in this._events === false) return;
-        for (var i = 0; i < this._events[event].length; i++) {
-            this._events[event][i].apply(this, Array.prototype.slice.call(arguments, 1));
-        }
+        var self = this;
+        this._events[event].forEach(function (e) {
+            e.apply(self, Array.prototype.slice.call(arguments, 1));
+        });
     };
 
     var offset = function (anchor) {
@@ -247,8 +248,9 @@ var LINES = (function () {
         },
         destroyAll: function () {
             _anchors.forEach(function (anchor) {
-                anchor.destroy();
+                emit.call(anchor, 'destroyed');
             });
+            _anchors = [];
         }
     };
 }());
