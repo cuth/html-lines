@@ -82,10 +82,12 @@ LINES.createLine(anchor1, anchor2, {
 These are basically for CSS hooks.
 
 #### stroke
-The stroke or height of the line element needs to be set in pixels to accuratly draw a line.
+The stroke or height of the line element needs to be set in pixels to accuratly draw a line.  
+![stroke demonstration](stroke.png)
 
 #### bleed
-Bleed is used to extend lines half the width of the stroke on each end.
+Bleed is used to extend lines half the width of the stroke on each end.  
+![bleed demonstration](bleed.png)
 
 ### LINES.redraw
 Recalculates anchor positions and changes line position, size and angle.
