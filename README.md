@@ -16,7 +16,7 @@ var LINES = require('html-lines');
 ```
 
 ### LINES.setOptions
-@param - {Object}
+@param - {Object}  
 Change the default options.
 ```js
 LINES.setOptions({
@@ -34,7 +34,7 @@ LINES.setOptions({
 ```
 
 ### LINES.createAnchor
-@param - {Object}
+@param - {Object}  
 @return - {Object} instance of Anchor
 ```js
 var anchor = LINES.createAnchor({
@@ -57,9 +57,9 @@ var anchor = LINES.createAnchor({
 *Anchors don't add anything to the DOM.*
 
 ### LINES.createLine
-@param - {Object} instance of Anchor
-@param - {Object} instance of Anchor
-@param - {Object}
+@param - {Object} instance of Anchor  
+@param - {Object} instance of Anchor  
+@param - {Object}  
 @return - {Object} instance of Line
 ```js
 LINES.createLine(anchor1, anchor2, {
@@ -94,14 +94,14 @@ LINES.redraw();
 ```
 
 ### LINES.getAnchors
-Returns a copy of the anchors array.
+Returns a copy of the anchors array.  
 @return - {Array}
 ```js
 var anchors = LINES.getAnchors();
 ```
 
 ### LINES.getLines
-Returns a copy of the lines array.
+Returns a copy of the lines array.  
 @return - {Array}
 ```js
 var lines = LINES.getLines();
@@ -148,8 +148,8 @@ console.log(dimensions.angle); // {Number} angle in radians of the line
 ```
 
 ### line.stroke
-Assigns a new stroke size if passing a number and always returns the stroke size.
-@param - {Number}
+Assigns a new stroke size if passing a number and always returns the stroke size.  
+@param - {Number}  
 @return - {Number}
 ```js
 line.stroke(3);
@@ -158,8 +158,8 @@ console.log(line.stroke()); // 3
 ```
 
 ### line.name
-Assigns a new name if passing a string and always returns the line name.
-@param - {String}
+Assigns a new name if passing a string and always returns the line name.  
+@param - {String}  
 @return - {String}
 ```js
 line.name('newName');
@@ -168,8 +168,8 @@ console.log(line.name()); // 'newName'
 ```
 
 ### line.state
-Assigns a new state if passing a string and always returns the line state.
-@param - {String}
+Assigns a new state if passing a string and always returns the line state.  
+@param - {String}  
 @return - {String}
 ```js
 line.state('newState');
