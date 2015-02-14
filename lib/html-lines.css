@@ -7,24 +7,3 @@
     -webkit-transform-origin: left top;
     transform-origin: left top;
 }
-
-/*[data-line]::before,
-[data-line]::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    width: 3px;
-    height: 3px;
-    border-radius: 50%;
-    background: rgba(0, 0, 0, .8);
-}
-
-[data-line]::before {
-    left: 0;
-    transform: translate(-1.5px, -1px);
-}
-
-[data-line]::after {
-    right: 0;
-    transform: translate(1.5px, -1px);
-}*/
