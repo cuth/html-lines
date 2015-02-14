@@ -1,0 +1,20 @@
+{
+  "name": "html-lines",
+  "version": "1.0.0",
+  "description": "Draw a line using an HTML element between two existing elements.",
+  "main": "html-lines.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cuth/html-lines.git"
+  },
+  "keywords": [
+    "draw",
+    "lines"
+  ],
+  "author": "cuth",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cuth/html-lines/issues"
+  },
+  "homepage": "https://github.com/cuth/html-lines"
+}

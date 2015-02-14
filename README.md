@@ -185,3 +185,5 @@ This is automatically called when either of the line's anchors are destroyed.
 line.destroy();
 ```
 *This should rarely be used since lines are destroyed when anchors are destroyed but not vice versa.*
+
+*ISC license*
