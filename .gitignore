@@ -1,0 +1,17 @@
+# TEMPORARY FILES
+.sass-cache
+
+# DEPENDENCIES
+node_modules
+bower_components
+
+# BUILD
+build
+
+# FILE TYPES
+*.zip
+*.bak
+*.orig
+
+# PERSONAL FILES
+TODO.json
