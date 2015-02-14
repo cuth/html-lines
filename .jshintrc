@@ -15,5 +15,6 @@
     "undef": true,
     "unused": true,
     "strict": true,
-    "trailing": true
+    "trailing": true,
+    "predef": ["module"]
 }

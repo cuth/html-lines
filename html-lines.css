@@ -1,28 +1,9 @@
 [data-line] {
     position: absolute;
+    left: 0;
+    top: 0;
     height: 1px;
-    background: rgba(0, 0, 0, .8);
+    background: #000;
+    -webkit-transform-origin: left top;
     transform-origin: left top;
-}
-
-[data-line]::before {
-    content: "";
-    position: absolute;
-    left: -1px;
-    top: -1px;
-    width: 3px;
-    height: 3px;
-    border-radius: 50%;
-    background: rgba(0, 0, 0, .8);
-}
-
-[data-line]::after {
-    content: "";
-    position: absolute;
-    right: -1px;
-    top: -1px;
-    width: 3px;
-    height: 3px;
-    border-radius: 50%;
-    background: rgba(0, 0, 0, .8);
 }

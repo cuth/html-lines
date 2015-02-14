@@ -39,10 +39,10 @@ LINES.setOptions({
 ```js
 var anchor = LINES.createAnchor({
     el: {HTMLElement or querySelector String},
+    xOrigin: {'center' or 'left' or 'right' or Number}, // any number is multiplied by the width
+    yOrigin: {'center' or 'top' or 'left' or Number}, // any number is multiplied by the height
     xOffset: {Number},
-    yOffset: {Number},
-    xOrigin: {'center' or 'left' or 'right'},
-    yOrigin: {'center' or 'top' or 'left'}
+    yOffset: {Number}
 });
 
 // defaults
@@ -64,15 +64,28 @@ var anchor = LINES.createAnchor({
 ```js
 LINES.createLine(anchor1, anchor2, {
     name: {String},
-    state: {String}
+    state: {String},
+    stroke: {Number},
+    bleed: {Boolean}
 });
 
 // defaults
 {
     name: '',
-    state: ''
+    state: '',
+    stroke: 1,
+    bleed: false
 }
 ```
+
+#### name and state
+These are basically for CSS hooks.
+
+#### stroke
+The stroke or height of the line element needs to be set in pixels to accuratly draw a line.
+
+#### bleed
+Bleed is used to extend lines half the width of the stroke on each end.
 
 ### LINES.redraw
 Recalculates anchor positions and changes line position and size and angle
@@ -81,12 +94,14 @@ LINES.redraw();
 ```
 
 ### LINES.getAnchors
+Returns a copy of the anchors array.
 @return - {Array}
 ```js
 var anchors = LINES.getAnchors();
 ```
 
 ### LINES.getLines
+Returns a copy of the lines array.
 @return - {Array}
 ```js
 var lines = LINES.getLines();
@@ -104,6 +119,12 @@ Instance of Anchor
 var anchor = LINES.createAnchor(...);
 ```
 
+### anchor.offset
+Recalculate the position of an anchor. Typically do this before calling `line.redraw()`.
+```js
+anchor.offset();
+```
+
 ### anchor.destory
 ```js
 anchor.destory();
@@ -117,25 +138,48 @@ Instance of Line
 var line = LINES.createLine(...);
 ```
 
+### line.redraw
+@return - {Object}
+```js
+var dimensions = line.redraw();
+
+console.log(dimensions.width); // {Number} length in pixels of the line
+console.log(dimensions.angle); // {Number} angle in radians of the line
+```
+
+### line.stroke
+Assigns a new stroke size if passing a number and always returns the stroke size.
+@param - {Number}
+@return - {Number}
+```js
+line.stroke(3);
+// or
+console.log(line.stroke()); // 3
+```
+
 ### line.name
+Assigns a new name if passing a string and always returns the line name.
 @param - {String}
 @return - {String}
 ```js
 line.name('newName');
 // or
-var name = line.name(); // newName
+console.log(line.name()); // 'newName'
 ```
 
 ### line.state
+Assigns a new state if passing a string and always returns the line state.
 @param - {String}
 @return - {String}
 ```js
 line.state('newState');
 // or
-var state = line.state(); // newState
+console.log(line.state()); // 'newState'
 ```
 
-### line.destory
+### line.destroy
+This is automatically called when either of the line's anchors are destroyed.
 ```js
-line.destory();
+line.destroy();
 ```
+*This should rarely be used since lines are destroyed when anchors are destroyed but not vice versa.*

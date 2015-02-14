@@ -1,3 +1,8 @@
+/*  html-lines
+ *  version: 1.0.0
+ *  https://github.com/cuth/html-lines
+ *  @preserve
+ */
 
 var LINES = (function () {
     'use strict';
@@ -44,38 +49,46 @@ var LINES = (function () {
 
         var rect = anchor.el.getBoundingClientRect();
 
-        switch (anchor.xOrigin) {
-            case 'left':
-                x = rect.left + anchor.xOffset;
-                break;
-            case 'right':
-                x = rect.left + rect.width - anchor.xOffset;
-                break;
-            default:
-                x = rect.left + rect.width / 2 + anchor.xOffset;
-                break;
+        if (typeof anchor.xOrigin === 'number') {
+            x = rect.left + rect.width * anchor.xOrigin + anchor.xOffset;
+        } else {
+            switch (anchor.xOrigin) {
+                case 'left':
+                    x = rect.left + anchor.xOffset;
+                    break;
+                case 'right':
+                    x = rect.left + rect.width - anchor.xOffset;
+                    break;
+                default:
+                    x = rect.left + rect.width / 2 + anchor.xOffset;
+                    break;
+            }
         }
 
-        switch (anchor.yOrigin) {
-            case 'top':
-                y = rect.top + anchor.yOffset;
-                break;
-            case 'bottom':
-                y = rect.top + rect.height - anchor.yOffset;
-                break;
-            default:
-                y = rect.top + rect.height / 2 + anchor.yOffset;
-                break;
+        if (typeof anchor.yOrigin === 'number') {
+            y = rect.top + rect.height * anchor.yOrigin + anchor.yOffset;
+        } else {
+            switch (anchor.yOrigin) {
+                case 'top':
+                    y = rect.top + anchor.yOffset;
+                    break;
+                case 'bottom':
+                    y = rect.top + rect.height - anchor.yOffset;
+                    break;
+                default:
+                    y = rect.top + rect.height / 2 + anchor.yOffset;
+                    break;
+            }
         }
 
-        anchor.offset = {
-            left: x,
-            top: y
+        anchor._offset = {
+            left: x + window.pageXOffset,
+            top: y + window.pageYOffset
         };
     };
 
     var Anchor = function (properties) {
-        if (!properties || typeof properties != 'object') return;
+        if (!properties || typeof properties !== 'object') return;
 
         if (typeof properties.el === 'string') {
             this.selector = properties.el;
@@ -84,15 +97,17 @@ var LINES = (function () {
             this.el = properties.el || document.body;
         }
 
-        this.xOffset = properties.xOffset || 0;
-        this.yOffset = properties.yOffset || 0;
-        this.xOrigin = properties.xOrigin || 'center';
-        this.yOrigin = properties.yOrigin || 'center';
+        this.xOffset = (typeof properties.xOffset === 'number') ? properties.xOffset : 0;
+        this.yOffset = (typeof properties.yOffset === 'number') ? properties.yOffset : 0;
+        this.xOrigin = (typeof properties.xOrigin === 'number' || typeof properties.xOrigin === 'string') ? properties.xOrigin : 'center';
+        this.yOrigin = (typeof properties.yOrigin === 'number' || typeof properties.yOrigin === 'string') ? properties.yOrigin : 'center';
 
         offset.call(this);
 
         _anchors.push(this);
     };
+
+    Anchor.prototype.offset = offset;
 
     Anchor.prototype.destroy = function () {
         var index = _anchors.indexOf(this);
@@ -115,19 +130,35 @@ var LINES = (function () {
     };
 
     var lineAngle = function (x1, y1, x2, y2) {
-        return Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+        return Math.atan2(y2 - y1, x2 - x1);
     };
 
     var draw = function (line) {
         line = line || this;
 
-        var width = lineDistance(line.anchor1.offset.left, line.anchor1.offset.top, line.anchor2.offset.left, line.anchor2.offset.top);
-        var angle = lineAngle(line.anchor1.offset.left, line.anchor1.offset.top, line.anchor2.offset.left, line.anchor2.offset.top);
+        var width = lineDistance(line.anchor1._offset.left, line.anchor1._offset.top, line.anchor2._offset.left, line.anchor2._offset.top);
+        var angle = lineAngle(line.anchor1._offset.left, line.anchor1._offset.top, line.anchor2._offset.left, line.anchor2._offset.top);
 
-        line.el.style.left = line.anchor1.offset.left + 'px';
-        line.el.style.top = line.anchor1.offset.top + 'px';
-        line.el.style.transform = 'rotate(' + angle + 'deg)';
+        var strokeOffsetLeft = Math.sin(angle) * line._stroke / 2;
+        var strokeOffsetTop = Math.cos(angle) * line._stroke / 2;
+
+        var translateX = line.anchor1._offset.left + strokeOffsetLeft;
+        var translateY = line.anchor1._offset.top - strokeOffsetTop;
+
+        if (line._bleed) {
+            translateX = translateX - strokeOffsetTop;
+            translateY = translateY - strokeOffsetLeft;
+            width = width + line._stroke;
+        }
+
+        line.el.style.webkitTransform  = 'translate(' + translateX + 'px, ' + translateY + 'px) rotate(' + angle + 'rad)';
+        line.el.style.transform = 'translate(' + translateX + 'px, ' + translateY + 'px) rotate(' + angle + 'rad)';
         line.el.style.width = width + 'px';
+
+        return {
+            width: width,
+            angle: angle
+        };
     };
 
     var destroyLine = function () {
@@ -138,15 +169,18 @@ var LINES = (function () {
             document.body.removeChild(this.el);
         }
 
-        this.anchor1.off('destroyed');
-        this.anchor2.off('destroyed');
+        off.call(this.anchor1, 'destroyed');
+        off.call(this.anchor2, 'destroyed');
     };
 
     var Line = function (anchor1, anchor2, properties) {
         this.anchor1 = anchor1;
         this.anchor2 = anchor2;
-        this._name = properties.name || '';
-        this._state = properties.state || '';
+
+        this._stroke = (typeof properties.stroke === 'number') ? properties.stroke : 1;
+        this._bleed = (typeof properties.bleed === 'boolean') ? properties.bleed : false;
+        this._name = (typeof properties.name === 'string') ? properties.name : '';
+        this._state = (typeof properties.state === 'string') ? properties.state : '';
 
         this.el = document.createElement(_options.lineElementType);
         this.el.setAttribute(_options.nameAttribute, this._name);
@@ -162,8 +196,19 @@ var LINES = (function () {
         _lines.push(this);
     };
 
+    Line.prototype.redraw = draw;
+
+    Line.prototype.destroy = destroyLine;
+
+    Line.prototype.stroke = function (stroke) {
+        if (typeof stroke === 'number') {
+            this._stroke = stroke;
+        }
+        return this._stroke;
+    };
+
     Line.prototype.name = function (name) {
-        if (typeof name === 'string') {
+        if (typeof name === 'string' && name !== this._name) {
             this._name = name;
             this.el.setAttribute(_options.nameAttribute, name);
         }
@@ -171,14 +216,12 @@ var LINES = (function () {
     };
 
     Line.prototype.state = function (state) {
-        if (typeof state === 'string') {
+        if (typeof state === 'string' && state !== this._state) {
             this._state = state;
             this.el.setAttribute(_options.stateAttribute, state);
         }
         return this._state;
     };
-
-    Line.prototype.destroy = destroyLine;
 
     return {
         setOptions: function (options) {
@@ -197,14 +240,14 @@ var LINES = (function () {
             _lines.forEach(draw);
         },
         getAnchors: function () {
-            return _anchors;
+            return _anchors.slice();
         },
         getLines: function () {
-            return _lines;
+            return _lines.slice();
         },
         destroyAll: function () {
             _anchors.forEach(function (anchor) {
-                anchor.destory();
+                anchor.destroy();
             });
         }
     };
