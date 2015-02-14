@@ -14,6 +14,28 @@ body {
     overflow-x: hidden;
 }
 
+.Link {
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+
+    &::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: -2px;
+        width: 0;
+        height: 2px;
+        background: #000;
+        transition: all .3s ease;
+    }
+
+    &:hover::after {
+        left: 0;
+        width: 100%;
+    }
+}
+
 h2 {
     margin: 0;
     padding: 10px 0 5px;
