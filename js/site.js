@@ -412,7 +412,7 @@ var debounce = function(func, wait, immediate) {
 
     var revert = function () {
         fadeLines = _lines.slice();
-        delay = 5000;
+        delay = 200;
 
         _lines.forEach(function (line) {
             line.state('hidden');
@@ -428,13 +428,15 @@ var debounce = function(func, wait, immediate) {
             return;
         }
 
-        var randomNum = Math.floor(Math.random() * fadeLines.length);
+        var left = fadeLines.length;
+
+        var randomNum = Math.floor(Math.random() * left);
 
         var line = fadeLines.splice(randomNum, 1)[0];
 
         line.state('invisible');
 
-        delay = delay - delay / 5 + 50;
+        delay = (Math.abs(350 - left * left) + 10) / 3;
 
         setTimeout(fade, delay);
     };
