@@ -3,10 +3,6 @@
 
 # DEPENDENCIES
 node_modules
-bower_components
-
-# BUILD
-build
 
 # FILE TYPES
 *.zip
