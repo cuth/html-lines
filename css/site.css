@@ -39,6 +39,12 @@ h2 {
   font-size: 25px;
   line-height: 1.4; }
 
+h3 {
+  margin: 0;
+  padding: 10px 0 0;
+  font-size: inherit;
+  line-height: inherit; }
+
 p {
   margin: 0;
   padding: 0 0 15px; }
