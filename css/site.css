@@ -1,3 +1,7 @@
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none; }
+
 html {
   height: 100%; }
 
@@ -31,7 +35,7 @@ body {
 
 h2 {
   margin: 0;
-  padding: 10px 0 5px;
+  padding: 15px 0 5px;
   font-size: 25px;
   line-height: 1.4; }
 
@@ -140,9 +144,8 @@ p {
   min-height: 300px;
   max-height: 600px;
   height: 50vh;
-  margin: 0 0 30px; }
-  .Github .icon,
-  .Github .shadow {
+  margin: 0 0 40px; }
+  .Github .icon {
     position: absolute;
     z-index: 10;
     left: 50%;
@@ -152,12 +155,6 @@ p {
     margin: 0 0 0 -40px;
     background: url("../img/github.svg") no-repeat left top/80px 80px;
     cursor: pointer; }
-  .Github .shadow {
-    z-index: 1;
-    opacity: 0;
-    transition: all .5s ease; }
-  .Github[data-state="dragging"] .shadow {
-    opacity: .5; }
   .Github .drop {
     position: absolute;
     z-index: 5;
@@ -189,15 +186,6 @@ p {
       height: 30px;
       font-size: 20px;
       line-height: 30px; } }
-
-[data-line="github-icon"] {
-  opacity: 0;
-  z-index: 7;
-  height: 5px;
-  background: #7f7f7f;
-  transition: opacity .5s ease; }
-  [data-line="github-icon"][data-line-state="dragging"] {
-    opacity: 1; }
 
 [data-line="drop-line"] {
   z-index: 3;
@@ -238,3 +226,62 @@ p {
       -webkit-transform: translate(-5px, -3.5px) scale(0.5);
       transform: translate(-5px, -3.5px) scale(0.5);
       opacity: 1; }
+
+.Match {
+  overflow: hidden;
+  margin: 0 -20px;
+  padding: 0 20px;
+  font-size: 18px;
+  line-height: 20px;
+  text-align: center; }
+  .Match ul {
+    width: 30%;
+    padding: 0;
+    list-style: none; }
+  .Match li {
+    position: relative;
+    margin: 0 0 30px;
+    padding: 12px;
+    border: 3px solid #000;
+    background: #fff;
+    color: #000;
+    cursor: pointer;
+    box-shadow: 0 0 4px rgba(0, 0, 159, 0);
+    transition: background-color .3s ease, color .3s ease, border-color .3s ease; }
+    .Match li:hover, .Match li[data-status="active"], .Match li[data-status="selected"] {
+      background: #000;
+      color: #fff; }
+    .Match li[data-status="correct"] {
+      border-color: #009f00;
+      background: #fff;
+      color: #000; }
+    .Match li[data-status="incorrect"] {
+      border-color: #9f0000;
+      background: #fff;
+      color: #000; }
+    .Match li[data-status="active"] {
+      box-shadow: 0 0 5px 2px rgba(0, 0, 159, 0.5); }
+  .Match .mountains {
+    float: left; }
+    .Match .mountains li {
+      border-radius: 25px; }
+  .Match .elevations {
+    float: right; }
+    .Match .elevations li {
+      border-radius: 25px; }
+  @media (max-width: 699px) {
+    .Match {
+      font-size: 13px;
+      line-height: 15px; } }
+
+[data-line="match-line"] {
+  height: 3px;
+  background: #000;
+  border-radius: 2px;
+  transition: width .5s ease; }
+  [data-line="match-line"][data-line-state="new"] {
+    width: 0 !important; }
+  [data-line="match-line"][data-line-state="correct"] {
+    background: #009f00; }
+  [data-line="match-line"][data-line-state="incorrect"] {
+    background: #9f0000; }

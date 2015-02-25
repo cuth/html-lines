@@ -460,7 +460,6 @@ var debounce = function(func, wait, immediate) {
 
     var github = document.querySelector('.Github');
     var icon = document.querySelector('.icon');
-    var shadow = document.querySelector('.shadow');
     var links = {
         docs: {
             el: document.querySelector('.docs')
@@ -470,18 +469,8 @@ var debounce = function(func, wait, immediate) {
         }
     };
 
-    var shadowAnchor = LINES.createAnchor({
-        el: shadow
-    });
-
     var iconAnchor = LINES.createAnchor({
         el: icon
-    });
-
-    var iconLine = LINES.createLine(shadowAnchor, iconAnchor, {
-        name: 'github-icon',
-        state: 'idle',
-        stroke: 5
     });
 
     var dropSettings = {
@@ -611,9 +600,6 @@ var debounce = function(func, wait, immediate) {
 
     var iconDrag = new Dragger(icon, {
         start: function (pos) {
-            github.setAttribute('data-state', 'dragging');
-            iconLine.state('dragging');
-            shadowAnchor.offset();
             links.docs.anchors.forEach(function (anchor) {
                 anchor.offset();
             });
@@ -631,7 +617,6 @@ var debounce = function(func, wait, immediate) {
             icon.style.webkitTransform = 'translate(' + pos.x + 'px, ' + pos.y + 'px)';
             icon.style.transform = 'translate(' + pos.x + 'px, ' + pos.y + 'px)';
             iconAnchor.offset();
-            iconLine.redraw();
 
             var shortestWidth = 100;
             var shortest = '';
@@ -670,8 +655,6 @@ var debounce = function(func, wait, immediate) {
                 return;
             }
 
-            github.setAttribute('data-state', 'idle');
-            iconLine.state('idle');
             links.docs.lines.forEach(function (line) {
                 line.state('idle');
             });
@@ -679,5 +662,126 @@ var debounce = function(func, wait, immediate) {
                 line.state('idle');
             });
         }
+    });
+}());
+
+
+// Match
+(function () {
+    'use strict';
+
+    var match = document.querySelector('.Match');
+    var mountains = match.querySelectorAll('.mountains li');
+    var elevations = match.querySelectorAll('.elevations li');
+    var activeMountain = null;
+    var activeElevation = null;
+
+    var lineSettings = {
+        name: 'match-line',
+        state: 'new',
+        stroke: 3
+    };
+
+    var setStatus = function (item, status) {
+        if (item.status === status) return;
+        item.status = status;
+        item.el.setAttribute('data-status', status);
+    };
+
+    var drawLine = function (mountain, elevation) {
+        setStatus(mountain, 'selected');
+        setStatus(elevation, 'selected');
+        activeMountain = null;
+        activeElevation = null;
+        var line = LINES.createLine(mountain.anchor, elevation.anchor, lineSettings);
+
+        setTimeout(function () {
+            line.state('draw');
+        }, 10);
+
+        setTimeout(function () {
+            var status = (mountain.key === elevation.key) ? 'correct' : 'incorrect';
+            line.state(status);
+            setStatus(mountain, status);
+            setStatus(elevation, status);
+        }, 510);
+    };
+
+    mountains = Array.prototype.map.call(mountains, function (mountain) {
+        var key = mountain.getAttribute('data-key');
+        mountain.removeAttribute('data-key');
+        return {
+            el: mountain,
+            status: 'blank',
+            key: key,
+            anchor: LINES.createAnchor({
+                el: mountain,
+                xOrigin: 'right',
+                xOffset: 1,
+                yOrigin: 'center'
+            })
+        };
+    });
+
+    elevations = Array.prototype.map.call(elevations, function (elevation) {
+        var key = elevation.getAttribute('data-key');
+        elevation.removeAttribute('data-key');
+        return {
+            el: elevation,
+            status: 'blank',
+            key: key,
+            anchor: LINES.createAnchor({
+                el: elevation,
+                xOrigin: 'left',
+                xOffset: 1,
+                yOrigin: 'center'
+            })
+        };
+    });
+
+    mountains.forEach(function (mountain) {
+        mountain.el.addEventListener('click', function (e) {
+            if (activeMountain === mountain) {
+                activeMountain = null;
+                setStatus(mountain, 'blank');
+                return;
+            }
+
+            if (activeMountain) {
+                setStatus(activeMountain, 'blank');
+            }
+
+            if (mountain.status === 'blank') {
+                activeMountain = mountain;
+                setStatus(mountain, 'active');
+
+                if (activeElevation) {
+                    drawLine(mountain, activeElevation);
+                }
+            }
+        });
+    });
+
+    elevations.forEach(function (elevation, index) {
+        elevation.el.addEventListener('click', function (e) {
+            if (activeElevation === elevation) {
+                activeElevation = null;
+                setStatus(elevation, 'blank');
+                return;
+            }
+
+            if (activeElevation) {
+                setStatus(activeElevation, 'blank');
+            }
+
+            if (elevation.status === 'blank') {
+                activeElevation = elevation;
+                setStatus(elevation, 'active');
+
+                if (activeMountain) {
+                    drawLine(activeMountain, elevation);
+                }
+            }
+        });
     });
 }());

@@ -27,25 +27,6 @@ pre[class*="language-"] {
     hyphens: none;
 }
 
-/* Code blocks */
-pre[class*="language-"] {
-    padding: 1em;
-    margin: .5em 0;
-    overflow: auto;
-    border-radius: 0.3em;
-}
-
-:not(pre) > code[class*="language-"],
-pre[class*="language-"] {
-    background: #272822;
-}
-
-/* Inline code */
-:not(pre) > code[class*="language-"] {
-    padding: .1em;
-    border-radius: .3em;
-}
-
 .token.comment,
 .token.prolog,
 .token.doctype,
